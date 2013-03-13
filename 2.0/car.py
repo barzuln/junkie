@@ -41,23 +41,50 @@ class Car:
 
 
 		q = Car.orientation + eps 
-		if 0 < q <= 90:
-			#1.Quadrant
-			x2 = car.x + a
-			y2 = car.y + b
-			car.updatePosition(x2, y2, (Car.orientation + eps))
-		elif 90 < q <= 180:
-			#2.Quadrant
-			x2 =  car.x - a
-			y2 = car.y + b
-			car.updatePosition(x2, y2, (Car.orientation + eps))
-		elif 180 < q <= 270:
-			#3.Quadrant
-			x2 =  car.x - a
-			y2 = car.y - b
-			car.updatePosition(x2, y2, (Car.orientation + eps))
-		else: 
-			#4.Quadrant
-			x2 =  car.x + a
-			y2 = car.y - b
-			car.updatePosition(x2, y2, (Car.orientation + eps))
+	if 0 < q <= 90:
+		#1.Quadrant
+		x2 = car.x + a
+		y2 = car.y + b
+		#car.updatePosition(x2, y2, (Car.orientation + eps))
+	elif 90 < q <= 180:
+		#2.Quadrant
+		x2 =  car.x - a
+		y2 = car.y + b
+		#car.updatePosition(x2, y2, (Car.orientation + eps))
+	elif 180 < q <= 270:
+		#3.Quadrant
+		x2 =  car.x - a
+		y2 = car.y - b
+		#car.updatePosition(x2, y2, (Car.orientation + eps))
+	else: 
+		#4.Quadrant
+		x2 =  car.x + a
+		y2 = car.y - b
+		
+	if collision(self.innerPoly, (self.x, self.y), (x2, y2)) && collision(self.outerPoly, (self.x, self.y), (x2, y2)):	
+		car.updatePosition(x2, y2, (Car.orientation + eps))	
+	else:
+		print "HURNS WAND!"
+	
+def collision(polygon, carpos1, carpos2):
+	
+	for i in range(0, len(polygon)-1, 1):
+		p1 = polygon[i]
+		p2 = 0
+		if i < (len(polygon)-1)
+			p2 = polygon[i + 1]
+		else:
+			p2 = polygon[0]
+		
+		k = (p2[1] - p1[1]) / (p2[0] - p1[0])
+		d = p1[1] - k * p1[0]
+		
+		k2 = (carpos2[1] - carps1[1])/(carpos2[0] - carpos1[0])
+		d2 = carpos1[1] - k * carpos1[0]
+		
+		xs = (d2 - d) / (k - k2)
+		
+		if min(carpos1[0], carpos2[0]) < xs < max(carpos1[0], carpos2[0]):
+			return True
+		
+	return False

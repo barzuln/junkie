@@ -2,10 +2,9 @@ import os, sys
 import pygame
 from pygame.locals import *
 
-class Car(pygame.sprite.Sprite):
+class Car:
 	#lock...Lenkeinschlag
 	def __init__ (self,mass,power,currentSpeed,maxSpeed,x,y,currentLock, maxLock, orientation):
-		pygame.sprite.Sprite.__init__(self)
 		self.mass = mass
 		self.power = power
 		self.currSpeed = currentSpeed
@@ -15,38 +14,32 @@ class Car(pygame.sprite.Sprite):
 		self.currLock = currentLock
 		self.maxLock = maxLock
 		self.orientation = orientation
-		self.image = pygame.image.load("car.png")
-		self.image = self.image.convert_alpha()
-		self.rect = self.image.get_rect()
-		
-	def update(self,seconds):
-		self.rect.center = pygame.mouse.get_pos()
 
 	def updatePosition(self,newX,newY,newAngle):
 		self.x = newX
 		self.y = newY
 		self.orientation = newAngle
 
-    def nextPos(time):
-        	
-		phi = Car.currLock
+	def nextPos(time):
 		
+		phi = Car.currLock
+
 		v2 = Car.currSpeed + getAcc() * time
 		va = ( v2 + Car.currSpeed) / 2
 		s = va * time
 		r = ((s/2)/(math.sin(math.radians( phi/2))))*(math.sin(math.radians((180-phi)/2)))
 		eps= phi/2
-		
+
 		x=math.sin(math.radians(eps)) * ((s/2)/(math.sin(math.radians(180 - phi))))
-		
+
 		if x == 0:
 			b = s * math.sin(math.radians(Car.orientation + eps))
 			a = s * math.sin(math.radians(90 - (Car.orientation + eps)))
 		else:
 			b = 2 * x * math.sin(math.radians(Car.orientation + eps))
 			a = 2 * x * math.sin(math.radians(90 - (Car.orientation + eps)))
-		
-		
+
+
 		q = Car.orientation + eps 
 		if 0 < q <= 90:
 			#1.Quadrant

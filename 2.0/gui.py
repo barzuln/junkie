@@ -17,14 +17,15 @@ class Gui:
         self.drawCar()
 
     def drawBackground(self):
-        self.screen.fill(colors['black'])
+        self.screen.fill(self.colors['black'])
         self.update()
         self.run()
     
-    def drawCar(self):
-        allsprites = pygame.sprite.RenderPlain(self.car)
-        allsprites.draw(self.screen)
-        update()
+	def drawCar(self):
+		self.car.update(1)
+		allsprites = pygame.sprite.RenderPlain(self.car)
+		allsprites.draw(self.screen)
+		update()
         
     def input(self,events):
         for event in events:

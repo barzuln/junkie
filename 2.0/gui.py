@@ -17,8 +17,9 @@ class Gui:
 	def drawStartUp(self):
 		colors = {'black':(0,0,0),'white':(255,255,255),'pink':(255,0,255)}
 		self.screen.fill(colors['white'])
-		pygame.draw.rect(self.screen, colors['pink'], pygame.Rect(self.car.x, self.car.y, 30, 15))
-		pygame.draw.polygon(self.screen, (0,180,0), ((250,100),(300,0),(350,50)))
+		pygame.draw.rect(self.screen, colors['pink'], pygame.Rect(self.car.x, self.car.y, 15, 7))
+		pygame.draw.polygon(self.screen, (0,180,0), ((100,215),(230,100),(400,150),(560,105),(650,180),(685,270),(710,400),(615,500),(510,545),(355,540),(335,480),(255,490),(185,540),(125,521),(90,420)),2)
+		pygame.draw.polygon(self.screen, (0,180,0), ((150,215),(230,150),(400,200),(540,155),(600,210),(625,275),(650,380),(600,440),(510,500),(380,480),(380,420),(260,430),(185,500),(150,480)),2)
 		self.update()
 		self.run()
 		
@@ -41,4 +42,4 @@ class Gui:
 			self.input(pygame.event.get())
 
 if  __name__ =='__main__':
-	Gui(800,400)
+	Gui(800,600)

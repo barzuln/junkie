@@ -10,7 +10,7 @@ class Gui:
 		self.heigth = heigth
 		self.windows = pygame.display.set_mode((width,heigth))
 		pygame.display.set_caption("Neuro Junk 2012/13")
-		self.car = Car(1400,66,0,177,80,350,0, 38, 180) #mass,power,currentSpeed,maxSpeed,x,y,currentLock, maxLock, orientation
+		self.car = Car(1400,1.43,0,50,(80,350),0, 38, 180,(4,2.5)) #self,mass,acceleration,currentSpeed,maxSpeed,pos,currentLock, maxLock, orientation, length, width
 		self.screen = pygame.display.get_surface()
 		self.drawStartUp()
 

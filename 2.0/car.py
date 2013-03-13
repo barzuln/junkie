@@ -4,17 +4,17 @@ from pygame.locals import *
 
 class Car:
 	#lock...Lenkeinschlag
-	def __init__ (self,mass,power,currentSpeed,maxSpeed,x,y,currentLock, maxLock, orientation):
-		self.mass = mass
-		self.power = power
-		self.currSpeed = currentSpeed
-		self.maxSpeed = maxSpeed
-		self.x = x
-		self.y = y
+	def __init__ (self,mass,acceleration,currentSpeed,maxSpeed,pos,currentLock, maxLock, orientation, size):
+		self.mass = mass #kg
+		self.acceleration = acceleration #meters/seconds
+		self.currSpeed = currentSpeed #meters/seconds
+		self.maxSpeed = maxSpeed #meters/seconds
+		self.position = pos
 		self.currLock = currentLock
 		self.maxLock = maxLock
 		self.orientation = orientation
-
+        self.size = size #in meter 
+        
 	def updatePosition(self,newX,newY,newAngle):
 		self.x = newX
 		self.y = newY
@@ -66,25 +66,29 @@ class Car:
 	else:
 		print "HURNS WAND!"
 	
-def collision(polygon, carpos1, carpos2):
-	
-	for i in range(0, len(polygon)-1, 1):
-		p1 = polygon[i]
-		p2 = 0
-		if i < (len(polygon)-1)
-			p2 = polygon[i + 1]
-		else:
-			p2 = polygon[0]
-		
-		k = (p2[1] - p1[1]) / (p2[0] - p1[0])
-		d = p1[1] - k * p1[0]
-		
-		k2 = (carpos2[1] - carps1[1])/(carpos2[0] - carpos1[0])
-		d2 = carpos1[1] - k * carpos1[0]
-		
-		xs = (d2 - d) / (k - k2)
-		
-		if min(carpos1[0], carpos2[0]) < xs < max(carpos1[0], carpos2[0]):
-			return True
-		
-	return False
+    def collision(polygon, carpos1, carpos2):
+        
+        for i in range(0, len(polygon)-1, 1):
+            p1 = polygon[i]
+            p2 = 0
+            if i < (len(polygon)-1)
+                p2 = polygon[i + 1]
+            else:
+                p2 = polygon[0]
+            
+            k = (p2[1] - p1[1]) / (p2[0] - p1[0])
+            d = p1[1] - k * p1[0]
+            
+            k2 = (carpos2[1] - carps1[1])/(carpos2[0] - carpos1[0])
+            d2 = carpos1[1] - k * carpos1[0]
+            
+            xs = (d2 - d) / (k - k2)
+            
+            if min(carpos1[0], carpos2[0]) < xs < max(carpos1[0], carpos2[0]):
+                return True
+            
+        return False
+        
+    def convertSizeToPixel(self, size):
+        return (size[0]*3,5,size[1]*3,75)
+        

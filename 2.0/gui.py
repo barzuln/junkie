@@ -22,8 +22,8 @@ class Gui:
         self.screen.fill(colors['white'])
         carsize = self.car.convertSizeToPixel()
         pygame.draw.rect(self.screen, colors['pink'], pygame.Rect(self.car.convertPositionToPixel()[0], self.car.convertPositionToPixel()[1], carsize[0], carsize[1]))#drawing the car
-        pygame.draw.polygon(self.screen, (0,180,0), self.outerPoly,2)
-        pygame.draw.polygon(self.screen, (0,180,0), self.innerPoly,2)
+        pygame.draw.polygon(self.screen, colors['black'], self.outerPoly,2)
+        pygame.draw.polygon(self.screen, colors['black'], self.innerPoly,2)
         self.update()
         self.run()
         
@@ -45,7 +45,7 @@ class Gui:
 
     def run(self):
         while True:
-            self.car.nextPos(1)
+            #self.car.nextPos(1)
             time.sleep(1)
             self.input(pygame.event.get())
 

@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from math import sqrt
+from math import sqrt, sin, cos
+from cmath import phase
 import pygame
 import sys
 from pygame.locals import *
-from pygame.draw import circle
-from pygame.draw import line
-from pygame.draw import rect
+from pygame.draw import circle, line, rect, polygon
 from pygame import Rect
+from car import Car
+
+class TrackSection:
+    inner_start = (0,0)
+    inner_end = (0,0)
+    outer_start = (0,0)
+    outer_end = (0,0)
 
 def intersectCircle(p1, p2, r):
     x1 = p1[0]
@@ -45,15 +51,74 @@ def intersectCircle(p1, p2, r):
     
     return betw1 or betw2
 
-"""
-<Event(3-KeyUp {'scancode': 111, 'key': 273, 'mod': 0})> up
-<Event(2-KeyDown {'scancode': 116, 'key': 274, 'unicode': u'', 'mod': 0})>
-<Event(3-KeyUp {'scancode': 116, 'key': 274, 'mod': 0})> down
-<Event(2-KeyDown {'scancode': 113, 'key': 276, 'unicode': u'', 'mod': 0})>
-<Event(3-KeyUp {'scancode': 113, 'key': 276, 'mod': 0})> left
-<Event(2-KeyDown {'scancode': 114, 'key': 275, 'unicode': u'', 'mod': 0})>
-<Event(3-KeyUp {'scancode': 114, 'key': 275, 'mod': 0})> right
-"""
+def changeField(field, car): 
+    """
+    Transforms the field around the car.
+    
+    The coordinate pairs given in field are translated and rotated in a way
+    that the car is in (0,0) facing upwards. This transform is applied to the
+    field before the ideal line is calculated to simplify further calculations.
+    """
+    field = [(pt[0]-car.x, pt[1]-car.y) for pt in field]
+    
+    angle = phase(complex(car.x,car.y))
+    
+    #x = (x * cos(angle)) - (y * sin(angle))
+    #y = (y * cos(angle)) + (x * sin(angle))
+    field = [((pt[0] * cos(angle)) - (pt[1] * sin(angle)), (pt[1] * cos(angle)) + (pt[0] * sin(angle))) for pt in field]
+    
+    return field
+
+def curSection(inner, outer):
+    """    
+    Returns the section the car is currently in.
+    """    
+    possible_inner = []
+    section = TrackSection()
+    
+    for i in range(len(inner)-1):
+        if inner[i][1] <= 0 and inner[i+1][1] >= 0:
+            possible_inner.append((inner[i], inner[i+1]))
+    
+    if len(possible_inner) == 0:
+        return None
+    
+    section.inner_start = possible_inner[0][0]
+    section.inner_end = possible_inner[0][1]
+    
+    for i in possible_inner:
+        if i[0][0] > section.inner_start[0]:
+            section.inner_start = i[0]
+            section.inner_end = i[1]
+    
+    possible_outer = []
+    section = TrackSection()
+    
+    for i in range(len(outer)-1):
+        if outer[i][1] <= 0 and outer[i+1][1] >= 0:
+            possible_inner.append((outer[i], outer[i+1]))
+    
+    if len(possible_outer) == 0:
+        return None
+    
+    section.outer_start = possible_outer[0][0]
+    section.outer_end = possible_outer[0][1]
+    
+    for i in possible_outer:
+        if i[0][0] > section.outer_start[0]:
+            section.outer_start = i[0]
+            section.outer_end = i[1]
+    
+    return section
+
+def nextSection(field):
+    pass
+
+def getIdeal(car, inner, outer):
+    inn = changeField(inner)
+    out = changeField(outer)
+    
+    
 
 def input(events):
     for event in events:
@@ -73,16 +138,27 @@ def input(events):
         elif event.type == KEYDOWN and event.key == 275: #Arrow_RIGHT
             point1[0] += 20
             point2[1] += 20
+        elif event.type == MOUSEBUTTONDOWN:
+            car.x = event.pos[0]
+            car.y = event.pos[1]
         else:
             print event
 
 radius = 300
 point1 = (400,0)
 point2 = (0, 400)
+car_radius = 30
+
+car = Car(0,0,0,0,0,0,0,0,0)
+car.x = 420
+car.y = 180
+
+outer_line = ((100,215),(230,100),(400,150),(560,105),(650,180),(685,270),(710,400),(615,500),(510,545),(355,540),(335,480),(255,490),(185,540),(125,521),(90,420))
+inner_line = ((150,215),(230,150),(400,200),(540,155),(600,210),(625,275),(650,380),(600,440),(510,500),(380,480),(380,420),(260,430),(185,500),(150,480))
 
 
 def runGUI():
-    window = pygame.display.set_mode((800,600))
+    pygame.display.set_mode((800,600))
     pygame.display.set_caption("Neuro Junk 2012/13")
     screen = pygame.display.get_surface()
     
@@ -93,8 +169,22 @@ def runGUI():
         circle(screen, (255,255,255), (0,0), radius, 1)
         line(screen, (255,255,255), point1, point2, 1)
         
+        polygon(screen, (255,255,255), outer_line, 2)
+        polygon(screen, (255,255,255), inner_line,2)
+        
         if intersectCircle(point1, point2, radius):
             rect(screen, (0,255,0), Rect(600, 200, 100, 100), 0)
+        
+        inn = changeField(inner_line, car)
+        out = changeField(outer_line, car)
+        csect = curSection(inn, out)
+        
+        polygon(screen, (0,0,255), out, 2)
+        polygon(screen, (0,0,255), inn,2)
+        
+        if csect is not None:
+            line(screen, (0,255,0), csect.inner_start, csect.inner_end, 1)
+            line(screen, (0,255,0), csect.outer_start, csect.outer_end, 1)
         
         pygame.display.update()
         

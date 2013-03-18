@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from math import sqrt, sin, cos
+from math import sqrt, sin, cos, pi
 from cmath import phase
 import pygame
 import sys
@@ -61,7 +61,7 @@ def changeField(field, car):
     """
     field = [(pt[0]-car.x, pt[1]-car.y) for pt in field]
     
-    angle = phase(complex(car.x,car.y))
+    angle = car.orientation
     
     #x = (x * cos(angle)) - (y * sin(angle))
     #y = (y * cos(angle)) + (x * sin(angle))
@@ -92,11 +92,10 @@ def curSection(inner, outer):
             section.inner_end = i[1]
     
     possible_outer = []
-    section = TrackSection()
     
     for i in range(len(outer)-1):
         if outer[i][1] <= 0 and outer[i+1][1] >= 0:
-            possible_inner.append((outer[i], outer[i+1]))
+            possible_outer.append((outer[i], outer[i+1]))
     
     if len(possible_outer) == 0:
         return None
@@ -132,15 +131,19 @@ def input(events):
         elif event.type == KEYDOWN and event.key == 274: #Arrow_DOWN
             global radius
             radius += 20
-        elif event.type == KEYDOWN and event.key == 276: #Arrow_LEFT
-            point1[0] -= 20
-            point2[1] -= 20
-        elif event.type == KEYDOWN and event.key == 275: #Arrow_RIGHT
-            point1[0] += 20
-            point2[1] += 20
-        elif event.type == MOUSEBUTTONDOWN:
+#        elif event.type == KEYDOWN and event.key == 276: #Arrow_LEFT
+#            point1[0] -= 20
+#            point2[1] -= 20
+#        elif event.type == KEYDOWN and event.key == 275: #Arrow_RIGHT
+#            point1[0] += 20
+#            point2[1] += 20
+        elif event.type == MOUSEBUTTONDOWN and event.button == 1:
             car.x = event.pos[0]
             car.y = event.pos[1]
+        elif event.type == MOUSEBUTTONDOWN and event.button == 3:
+            carpos = complex(car.x, car.y)
+            mpos = complex(event.pos[0], event.pos[1])
+            car.orientation = phase(mpos - carpos)
         else:
             print event
 
@@ -149,9 +152,10 @@ point1 = (400,0)
 point2 = (0, 400)
 car_radius = 30
 
-car = Car(0,0,0,0,0,0,0,0,0)
+car = Car(0,0,0,0,0,0,0,0,0,0,0)
 car.x = 420
 car.y = 180
+car.orientation = pi/2
 
 outer_line = ((100,215),(230,100),(400,150),(560,105),(650,180),(685,270),(710,400),(615,500),(510,545),(355,540),(335,480),(255,490),(185,540),(125,521),(90,420))
 inner_line = ((150,215),(230,150),(400,200),(540,155),(600,210),(625,275),(650,380),(600,440),(510,500),(380,480),(380,420),(260,430),(185,500),(150,480))
@@ -180,7 +184,9 @@ def runGUI():
         csect = curSection(inn, out)
         
         polygon(screen, (0,0,255), out, 2)
-        polygon(screen, (0,0,255), inn,2)
+        polygon(screen, (0,0,255), inn, 2)
+        
+        rect(screen, (255,255,255), Rect(car.x-2, car.y-2, 4, 4), 0)
         
         if csect is not None:
             line(screen, (0,255,0), csect.inner_start, csect.inner_end, 1)

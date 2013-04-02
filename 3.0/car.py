@@ -104,7 +104,7 @@ class Car:
 		
 			
 	def collision(self, polygon, carpos1, carpos2):
-		for i in range(0, len(polygon)-1, 1):
+		for i in range(0, len(polygon), 1):
 			p1 = polygon[i]
 			p2 = 0.0
 			k = 0.0
@@ -114,8 +114,6 @@ class Car:
 				#print "setting p2 to " + str(p2)
 			else:
 				p2 = polygon[0]
-			if p2[0] == p1[0] and p2[1] == p1[1]:
-				return False
 			if p2[0] != p1[0]:
 				k = (p2[1] - p1[1]) / (p2[0] - p1[0])
 			else:
@@ -136,8 +134,7 @@ class Car:
 				xs = (d - d2) / (k2 - k)
 				##print xs
 							
-			if min(carpos1[0], carpos2[0]) < xs < max(carpos1[0], carpos2[0]):
-				#print "Collsion detected"
+			if (min(carpos1[0], carpos2[0]) < xs < max(carpos1[0], carpos2[0])) and (min(p1[0], p2[0]) < xs < max(p1[0], p2[0])):
 				return True
 		return False
 

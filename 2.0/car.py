@@ -26,10 +26,10 @@ class Car:
 		return (self.size[0]*3.5,self.size[1]*3.5)
 
 	def convertPositionToPixel(self): #from meters to pixel
-		return (self.position[0]*3.5,self.position[1]*3.5)
-		
+		return (self.position[0]*3.5,(self.position[1]*3.5))
+
 	def convertPolygonToMeters(self, pixel):
-		return (pixel[0]/3.5,800-pixel[1]/3.5)
+		return (pixel[0]/3.5,600-pixel[1]/3.5)
 
 	def nextPos(self, time):
 		phi = self.currLock
@@ -71,8 +71,9 @@ class Car:
 			self.updatePosition(x2, y2, (self.orientation + eps))	
 		else:
 			print "WAND!"
-			print self.position
-			print str(x2) + str(y2)
+			print "currpos: " + str(self.position)
+			print "nextpos: " + str(x2) + "/" + str(y2)
+			sys.exit(0)
 		self.currSpeed = v2
 			
 	def collision(self, polygon, carpos1, carpos2):

@@ -78,7 +78,7 @@ class Car:
 		eps = phi/2
 		#print "eps: " + str(eps)
 		x = (math.sin(math.radians(eps)) * ((s/2)/(math.sin(math.radians((180 - eps))))))
-		if (self.orientation + eps) == 90.0000 or (self.orientation + eps) == 180.00000:
+		if (self.orientation + eps) == 90.0000 or (self.orientation + eps) == 270.00000:
 			self.orientation += 0.01
 		if x == 0:
 			b = s * math.sin(math.radians(self.orientation))

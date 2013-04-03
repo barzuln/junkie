@@ -152,7 +152,7 @@ point1 = (400,0)
 point2 = (0, 400)
 car_radius = 30
 
-car = Car(0,0,0,0,0,0,0,0,0,0,0)
+car = Car(0,0,0,0,0,0,0,0,0,0,0,0,0)
 car.x = 420
 car.y = 180
 car.orientation = pi/2

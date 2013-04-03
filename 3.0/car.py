@@ -32,10 +32,10 @@ class Car:
 		return (pcx, pcy)
 
 	def convertSizeFromPixelToMeters(self, size):
-		return (size[0]*3.5,size[1]*3.5)
+		return (size[0]/3.5,size[1]/3.5)
 
 	def convertSizeFromMetersToPixel(self):
-		return (self.size[0]/3.5,self.size[1]/3.5)
+		return (self.size[0]*3.5,self.size[1]*3.5)
 
 	def convertPixelPolygonToMeters(self, poly):
 		converted = []

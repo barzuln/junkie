@@ -13,9 +13,9 @@ class GUI:
 		self.heigth = heigth
 		self.windows = pygame.display.set_mode((width,heigth))
 		pygame.display.set_caption("Neuro Junk 2012/13")
-		self.outerPoly = [(100,215),(230,100),(400,150),(560,105),(650,180),(685,270),(710,400),(615,500),(510,545),(355,540),(335,480),(255,490),(185,540),(125,521),(90,420)]
-		self.innerPoly = [(150,215),(230,150),(400,200),(540,155),(600,210),(625,275),(650,380),(600,440),(510,500),(380,480),(380,420),(260,430),(185,500),(150,480)]
-		self.car = Car(1400,0.0,35.0,25.0,0.0,130.0,(120,215),0.0, 38.0, 270.0,(15,15),self.innerPoly, self.outerPoly) 
+		self.outerPoly = [(110,215),(230,100),(400,150),(560,105),(650,180),(685,270),(710,400),(615,500),(510,545),(365,540),(315,480),(255,490),(185,540),(125,521),(90,420)]
+		self.innerPoly = [(160,215),(230,150),(400,200),(540,155),(600,210),(625,275),(650,380),(600,440),(510,500),(370,480),(380,420),(260,430),(185,500),(150,480)]
+		self.car = Car(1400,0.0,35.0,25.0,0.0,130.0,(120,215),0.0, 38.0, 90.0,(15,15),self.innerPoly, self.outerPoly) 
 		#mass,acceleration,maxAcc,maxBreakingForce,currentSpeed,maxSpeed,pos,currentLock, maxLock, orientation, length, width
 		self.colors = {'black':(0,0,0),'white':(255,255,255),'pink':(255,0,255)}
 		self.screen = pygame.display.get_surface()
@@ -87,8 +87,8 @@ class GUI:
 			mt = self.car.nextPos(0.01)
 			self.update()
 			#print "mt: " + str(mt)
-			lines.append(mt)
-			self.drawLines(lines)
+			#lines.append(mt)
+			#self.drawLines(lines)
 			time.sleep(0.01)
 
 if  __name__ =='__main__':
